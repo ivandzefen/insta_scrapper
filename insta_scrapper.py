@@ -6,8 +6,8 @@ from selenium import webdriver
 from bs4 import BeautifulSoup as bs
 import time
 #from selenium.webdriver.common.keys import keys
-
-def getinfo():
+def get
+def get_info():
     '''  
     prompts the user name, password, tag and number of instagram users whose info are required 
     ''' 
@@ -48,7 +48,7 @@ def login_insta(driver,usrn,psw):
     except e:
         print(e)
     
-def scrapnames(driver,hashtag,number):
+def scrap_names(driver,hashtag,number):
     '''
     searhs for a # and gets the handle of a number of users who used the #
     parameters
@@ -83,18 +83,18 @@ def scrapnames(driver,hashtag,number):
             skipped+=1
             consecutiveskipped+=1
             print('skipped:',skipped)
-            onpic=nextpic(driver)
+            onpic=next_pic(driver)
             continue    
         name=name.text
         names.append(name)
         i-=1
         print(number-i,':',name)
-        onpic=nextpic(driver)
+        onpic=next_pic(driver)
     if consecutiveskipped>=10:
         print("check your connection")
     return names
     
-def getfollowers(driver,names):
+def get_followers(driver,names):
     '''
     gets the number of followers for every handle in a list
     parameters
@@ -115,7 +115,7 @@ def getfollowers(driver,names):
         print(names[i],':',followers[i])
     return followers
     
-def nextpic(driver):
+def next_pic(driver):
     '''
     clicks on the next arrow on an instagram picture
     parameters 
@@ -138,12 +138,12 @@ def start():
     minute=str(t.tm_min)
     sec=str(t.tm_sec)
     dayTime=year+'-'+mon+'-'+day+'_'+hour+':'+minute+':'+sec
-    username,password,hashtag,number=getinfo()
+    username,password,hashtag,number=get_info()
     driver=webdriver.Firefox()
     login_insta(driver,username,password)
     time.sleep(10)
-    names=scrapnames(driver,hashtag,number)
-    followers=getfollowers(driver,names)
+    names=scrap_names(driver,hashtag,number)
+    followers=get_followers(driver,names)
     with open('scrap_'+dayTime+'.csv','w') as file:
         print('name,followers',file=file)
         for i in range(len(names)):
